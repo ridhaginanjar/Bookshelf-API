@@ -1,3 +1,4 @@
+const { request } = require("http");
 const {nanoid} = require("nanoid");
 const books = require("./books");
 
@@ -144,7 +145,9 @@ const editBookByIdHandler = (request, h) => {
         pageCount, 
         readPage, 
         reading,
+        bookId,
         updatedAt,
+        insertedAt,
         finished
         };
 
@@ -166,4 +169,27 @@ const editBookByIdHandler = (request, h) => {
 
 };
 
-module.exports = {addBookHandler, getAllBookHandler,getBookByIdHandler,editBookByIdHandler};
+const deleteBookByIdHandler = (request, h) => {
+    const { bookId } = request.params;
+   
+    const f_index = books.findIndex((b) => b.id === bookId);
+   
+    if (f_index !== -1) {
+      books.splice(f_index, 1);
+      const response = h.response({
+        status: 'success',
+        message: 'Buku berhasil dihapus',
+      });
+      response.code(200);
+      return response;
+    }
+   
+   const response = h.response({
+      status: 'fail',
+      message: 'Buku gagal dihapus. Id tidak ditemukan',
+    });
+    response.code(404);
+    return response;
+}
+
+module.exports = {addBookHandler, getAllBookHandler,getBookByIdHandler,editBookByIdHandler, deleteBookByIdHandler};
