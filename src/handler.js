@@ -31,18 +31,18 @@ const addBookHandler = (request,h) => {
     const finished = pageCount === readPage;
 
     const newBook = {
+        id,
         name, 
         year, 
         author, 
         summary, 
         publisher, 
         pageCount, 
-        readPage, 
+        readPage,
+        finished, 
         reading,
-        id,
         updatedAt,
         insertedAt,
-        finished
     };
 
     books.push(newBook);
@@ -69,12 +69,12 @@ const addBookHandler = (request,h) => {
 };
 
 const getAllBookHandler = (request,h) => {
-    let filterBook = books;
+    const getbuku = books;
 
     const response = h.response({
         status : "success",
         data : {
-            books : filterBook.map((book) => ({
+            books : getbuku.map((book) => ({
                 id : book.id,
                 name : book.name,
                 publisher : book.publisher
@@ -134,6 +134,7 @@ const editBookByIdHandler = (request, h) => {
 
     const f_index = books.findIndex((b) => b.id === bookId);
 
+    //Jika Nama ada
     if (f_index !== -1) {
         books[f_index] = {
         ...books[f_index],
